@@ -10,31 +10,24 @@ const restaurantStatusList = [
 
 type RecommendStatus = typeof restaurantStatusList[number]
 
-interface Restaurant {
-  name?: string
-  status?: RecommendStatus
-  dishes?: Dish[]
-}
-
 interface Dish {
-  name: string
+  name?: string
   diet?: Diet
   status?: RecommendStatus 
 }
 
 type Diet = 'vegetarian' | 'vegan' | 'gluten-free' | 'pescatarian' | 'lactose-free' | 'other'
 
-const restaurantList = ref<Restaurant[]>([])
-const newRestaurant = ref<Restaurant>({
+const dishList = ref<Dish[]>([])
+const newDish = ref<Dish>({
   status: 'Want to Try'
 })
 
 
-function addRestaurant() {
-  restaurantList.value.push({
-    name: newRestaurant.value.name,
-    status: newRestaurant.value.status,
-    dishes: []
+function addDish() {
+  dishList.value.push({
+    name: newDish.value.name,
+    status: newDish.value.status
   })
 }
 </script>
@@ -42,26 +35,27 @@ function addRestaurant() {
 <template>
   <main>
     <pre>
-      {{ newRestaurant }}
+      {{ newDish }}
     </pre>
-    <form @submit.prevent="addRestaurant">
+    <form @submit.prevent="addDish">
       <div>
-        <label for="restaurant-name">Restaurant Name</label>
-        <input id="restaurant-name" v-model="newRestaurant.name" type="text" />
+        <label for="dish-name">Dish Name</label>
+        <input id="dish-name" v-model="newDish.name" type="text" />
       </div>
 
       <div>
-        <label for="restaurant-status">Restaurant Status</label>
-        <select name="restaurant-status" id="restaurant-status" v-model="newRestaurant.status">
+        <label for="dish-status">Dish Status</label>
+        <select name="dish-status" id="dish-status" v-model="newDish.status">
           <option v-for="status in restaurantStatusList" :value="status" :key="status">{{ status }}</option>
         </select>
       </div>
       <button type="submit">Add Restaurant</button>
     </form>
     <ul>
-      <li v-for="restaurant in restaurantList" :key="restaurant.name">
+      <li v-for="restaurant in dishList" :key="restaurant.name">
         {{ restaurant.name }} - {{ restaurant.status }}
       </li>
     </ul>
   </main>
 </template>
+
